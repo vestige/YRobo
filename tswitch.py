@@ -17,7 +17,7 @@ SW_DICT = {
 
 TACK_JUDGE = [False, False, True, True]
 
-class SwThread(threading.Thread):
+class TswitchThread(threading.Thread):
     def __init__(self, snd_que = None):
         ic()
         threading.Thread.__init__(self)
@@ -32,49 +32,53 @@ class SwThread(threading.Thread):
         
         return
 
-
     def stop(self):
         ic()
         self.stop_event.set()
+        for sw in self._sws.values():
+            sw.close()
+
         return
 
     def run(self):
         ic()
         
         def press_no1():
-            self._send_msg("no1")
+            self._send_msg("no1", "pressed")
+
+        def release_no1():
+            self._send_msg("no1", "released")
         
         def press_no2():
-            self._send_msg("no2")
+            self._send_msg("no2", "pressed")
+
+        def release_no2():
+            self._send_msg("no2", "released")
             
         self._sws["no1"].when_pressed = press_no1
+        self._sws["no1"].when_released = release_no1
         self._sws["no2"].when_pressed = press_no2
+        self._sws["no2"].when_released = press_no2
         
         while True:
-            time.sleep(0.050)
+            time.sleep(1.0)
 
         return
     
-    def _send_msg(self, name):
+    def _send_msg(self, name, action):
         if self._snd_que is None:
             return
+
         ic()
         ic("[sw_th]", "_send_msg:", name)
-        self._snd_que.put({"type": "sw", "name": name})
+        self._snd_que.put({"type": "sw", "name": name, "action": action})
         return
-
-    def _read_poll(self, name):
-        if self._sws[name].is_pressed:
-            self._send_msg(name)
-            return True
-        
-        return False
 
 def main():
     q = Queue()
-    sw_th = SwThread(q)
+    sw_th = TswitchThread(q)
     sw_th.start()
-    time.sleep(10)
+    time.sleep(3)
     sw_th.stop()
     
     while True:
