@@ -12,3 +12,19 @@
 # memo
 
     %source env_torpc/bin/activate
+
+# append
+## Font /OLE
+
+    %fc-list
+    %sudo apt install fonts-ipafont
+
+## httpd
+
+    %pip install bottle
+    
+## joystick
+
+    %pip install eightbitdo_zero2
+  
+    
