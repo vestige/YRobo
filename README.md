@@ -13,8 +13,6 @@
 
     %source env_torpc/bin/activate
 
-<<<<<<< HEAD
-=======
 # append
 ## Font /OLE
 
@@ -29,5 +27,6 @@
 
     %pip install eightbitdo_zero2
   
-    
->>>>>>> 2813b0cb2e6e0914d40e253aff66751f7bea60e0
+## Cron
+
+    after...
