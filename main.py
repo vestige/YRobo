@@ -1,8 +1,6 @@
 import time
 
 # debug
-import sys
-from icecream import ic
 
 from led import LedThread
 from tswitch import SwThread
@@ -41,11 +39,11 @@ def main():
     out_ths = {}
     que_out = setupOutputs(out_ths)
 
-    pre = {}
-    que_pre = setupPresenter(pre, que_out)
-
     in_ths = {}
-    setupInputs(in_ths, que_pre)
+    que_in = setupInputs(in_ths)
+
+    pre = {}
+    que_pre = setupPresenter(pre, que_in, que_out)
 
     try:
         while True:
